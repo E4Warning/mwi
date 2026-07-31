@@ -1,0 +1,45 @@
+url: https://e4warning.github.io/mwi/
+
+template:
+  bootstrap: 5
+
+reference:
+- title: The index
+  desc: >
+    Compute the Mosquito Weather Index and its temperature-and-humidity-only
+    variant.
+  contents:
+  - mwi
+  - mwi_fhft
+
+- title: Response functions
+  desc: >
+    The three weather responses the index is built from, and the wind cut-off
+    they share.
+  contents:
+  - mwi_responses
+  - mwi_wind_threshold
+
+- title: Aggregating over time
+  desc: >
+    Summarise sub-daily weather into index values in the order the index
+    requires.
+  contents:
+  - mwi_summarise
+
+- title: Activity classes
+  desc: >
+    Map continuous index values onto the five ordered classes used for public
+    communication.
+  contents:
+  - mwi_category
+  - mwi_activity_levels
+
+- title: Unit conversions
+  desc: >
+    Derive the index inputs from the forms in which reanalysis products
+    distribute them.
+  contents:
+  - relative_humidity_from_dewpoint
+  - wind_speed_from_components
+  - celsius_from_kelvin

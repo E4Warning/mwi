@@ -1,0 +1,42 @@
+Package: mwi
+Title: Compute the Mosquito Weather Index
+Version: 0.1.0
+Authors@R: c(
+    person("Antonios", "Michaelakis", role = "aut",
+           comment = c(ORCID = "0000-0002-3075-5020")),
+    person("Georgios", "Balatsos", role = "aut",
+           comment = c(ORCID = "0000-0002-3973-068X")),
+    person("Vasileios", "Karras", role = "aut"),
+    person("Dimitrios", "Papachristos", role = "aut"),
+    person("Rachel", "Lowe", role = "aut"),
+    person("Frederic", "Bartumeus", role = "aut"),
+    person("Ioannis", "Lemesios", role = "aut"),
+    person("Christos", "Giannakopoulos", role = "aut"),
+    person("Konstantinos", "Lagouvardos", role = "aut"),
+    person("John R. B.", "Palmer", , "john.palmer@upf.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-2648-7860"))
+  )
+Description: Computes the Mosquito Weather Index (MWI), an operational index
+    that combines air temperature, relative humidity and wind speed into a
+    single number between 0 and 1 summarising how favourable the weather is for
+    adult mosquito activity, and maps that number onto five ordered activity
+    classes. The index was developed by the Benaki Phytopathological Institute
+    and the National Observatory of Athens under the LIFE CONOPS project and has
+    been published operationally since 2014. Because the index is a non-linear
+    function of its three inputs, it must be evaluated at sub-daily resolution
+    before being aggregated over time; helpers are provided that enforce that
+    order of operations.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 3.6.0)
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/E4Warning/mwi, https://e4warning.github.io/mwi/
+BugReports: https://github.com/E4Warning/mwi/issues

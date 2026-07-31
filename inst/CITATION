@@ -1,0 +1,22 @@
+citHeader("To cite mwi in publications, please cite both the software and the evaluation study:")
+
+bibentry(
+  bibtype  = "Manual",
+  title    = "mwi: Compute the Mosquito Weather Index",
+  author   = c(person("John R. B.", "Palmer"),
+               person("Antonios", "Michaelakis"),
+               person("Konstantinos", "Lagouvardos")),
+  year     = "2026",
+  note     = "R package version 0.1.0"
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Evaluating the Mosquito Weather Index Using Adult Suction Traps in Greece",
+  author   = c(person("Antonios", "Michaelakis"),
+               person("Georgios", "Balatsos"),
+               person("John R. B.", "Palmer")),
+  journal  = "Manuscript in preparation",
+  year     = "2026",
+  note     = "Update this entry with the journal, volume and DOI on publication"
+)
