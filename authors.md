@@ -28,7 +28,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/E4Warning/mwi/blob/v0.1.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/E4Warning/mwi/blob/main/inst/CITATION)
 
 Palmer J, Michaelakis A, Lagouvardos K (2026). *mwi: Compute the
 Mosquito Weather Index*. R package version 0.1.0.
