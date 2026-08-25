@@ -3,11 +3,14 @@ citHeader("To cite mwi in publications, please cite both the software and the ev
 bibentry(
   bibtype  = "Manual",
   title    = "mwi: Compute the Mosquito Weather Index",
-  author   = c(person("John R. B.", "Palmer"),
-               person("Antonios", "Michaelakis"),
-               person("Konstantinos", "Lagouvardos")),
+  author   = c(person("Antonios", "Michaelakis"),
+               person("Georgios", "Balatsos"),
+               person("Vasileios", "Karras"),
+               person("Dimitrios", "Papachristos"),
+               person("John R. B.", "Palmer")),
   year     = "2026",
-  note     = "R package version 0.1.0"
+  note     = "R package version 0.1.0",
+  doi      = "10.5281/zenodo.22101143"
 )
 
 bibentry(

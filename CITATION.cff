@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this package, please cite it together with the evaluation article (see the article reference in the README)."
+title: "mwi: Compute the Mosquito Weather Index"
+type: software
+version: 0.1.0
+doi: 10.5281/zenodo.22101143
+license: GPL-3.0-or-later
+repository-code: "https://github.com/E4Warning/mwi"
+url: "https://e4warning.github.io/mwi/"
+abstract: >-
+  Computes the Mosquito Weather Index (MWI), an operational index combining air
+  temperature, relative humidity and wind speed into a single number between 0
+  and 1 summarising how favourable the weather is for adult mosquito activity,
+  and maps that number onto five ordered activity classes. Developed by the
+  Benaki Phytopathological Institute and the National Observatory of Athens
+  under the LIFE CONOPS project (LIFE12 ENV/GR/000466).
+authors:
+  - family-names: Michaelakis
+    given-names: Antonios
+    orcid: "https://orcid.org/0000-0002-3075-5020"
+  - family-names: Balatsos
+    given-names: Georgios
+    orcid: "https://orcid.org/0000-0002-3973-068X"
+  - family-names: Karras
+    given-names: Vasileios
+  - family-names: Papachristos
+    given-names: Dimitrios
+  - family-names: Palmer
+    given-names: John R. B.
+    orcid: "https://orcid.org/0000-0002-2648-7860"
+    email: john.palmer@upf.edu

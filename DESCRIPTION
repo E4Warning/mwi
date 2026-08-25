@@ -8,11 +8,6 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-3973-068X")),
     person("Vasileios", "Karras", role = "aut"),
     person("Dimitrios", "Papachristos", role = "aut"),
-    person("Rachel", "Lowe", role = "aut"),
-    person("Frederic", "Bartumeus", role = "aut"),
-    person("Ioannis", "Lemesios", role = "aut"),
-    person("Christos", "Giannakopoulos", role = "aut"),
-    person("Konstantinos", "Lagouvardos", role = "aut"),
     person("John R. B.", "Palmer", , "john.palmer@upf.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-2648-7860"))
   )
