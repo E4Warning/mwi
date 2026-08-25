@@ -12,16 +12,6 @@
 
 - **Dimitrios Papachristos**. Author.
 
-- **Rachel Lowe**. Author.
-
-- **Frederic Bartumeus**. Author.
-
-- **Ioannis Lemesios**. Author.
-
-- **Christos Giannakopoulos**. Author.
-
-- **Konstantinos Lagouvardos**. Author.
-
 - **John R. B. Palmer**. Author, maintainer.
   [](https://orcid.org/0000-0002-2648-7860)
 
@@ -30,14 +20,17 @@
 Source:
 [`inst/CITATION`](https://github.com/E4Warning/mwi/blob/main/inst/CITATION)
 
-Palmer J, Michaelakis A, Lagouvardos K (2026). *mwi: Compute the
-Mosquito Weather Index*. R package version 0.1.0.
+Michaelakis A, Balatsos G, Karras V, Papachristos D, Palmer J (2026).
+*mwi: Compute the Mosquito Weather Index*.
+[doi:10.5281/zenodo.22101143](https://doi.org/10.5281/zenodo.22101143).
+R package version 0.1.0.
 
     @Manual{,
       title = {mwi: Compute the Mosquito Weather Index},
-      author = {John R. B. Palmer and Antonios Michaelakis and Konstantinos Lagouvardos},
+      author = {Antonios Michaelakis and Georgios Balatsos and Vasileios Karras and Dimitrios Papachristos and John R. B. Palmer},
       year = {2026},
       note = {R package version 0.1.0},
+      doi = {10.5281/zenodo.22101143},
     }
 
 Michaelakis A, Balatsos G, Palmer J (2026). “Evaluating the Mosquito
