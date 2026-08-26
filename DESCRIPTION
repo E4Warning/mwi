@@ -32,6 +32,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Language: en-GB
 VignetteBuilder: knitr
 URL: https://github.com/E4Warning/mwi, https://e4warning.github.io/mwi/
 BugReports: https://github.com/E4Warning/mwi/issues

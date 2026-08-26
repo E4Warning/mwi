@@ -8,3 +8,4 @@
 ^pkgdown$
 ^\.lintr$
 ^CITATION\.cff$
+^cran-comments\.md$

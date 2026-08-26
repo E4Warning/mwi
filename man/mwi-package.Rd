@@ -25,11 +25,6 @@ Authors:
   \item Georgios Balatsos (\href{https://orcid.org/0000-0002-3973-068X}{ORCID})
   \item Vasileios Karras
   \item Dimitrios Papachristos
-  \item Rachel Lowe
-  \item Frederic Bartumeus
-  \item Ioannis Lemesios
-  \item Christos Giannakopoulos
-  \item Konstantinos Lagouvardos
 }
 
 }
