@@ -19,7 +19,7 @@ bibentry(
   author   = c(person("Antonios", "Michaelakis"),
                person("Georgios", "Balatsos"),
                person("John R. B.", "Palmer")),
-  journal  = "Manuscript in preparation",
+  journal  = "Submitted",
   year     = "2026",
   note     = "Update this entry with the journal, volume and DOI on publication"
 )

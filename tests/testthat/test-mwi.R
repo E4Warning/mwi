@@ -64,3 +64,8 @@ test_that("mwi_fhft() ignores wind entirely", {
   expect_gt(mwi_fhft(22, 70), 0)
   expect_equal(mwi_fhft(22, 70), mwi_humidity(70) * mwi_temperature(22))
 })
+
+test_that("zero-length input yields zero-length output through recycling", {
+  expect_length(mwi(numeric(0), 70, 5), 0)
+  expect_length(mwi_fhft(numeric(0), numeric(0)), 0)
+})

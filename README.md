@@ -5,7 +5,8 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/E4Warning/mwi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/E4Warning/mwi/actions/workflows/R-CMD-check.yaml) [![DOI](https://zenodo.org/badge/1313906635.svg)](https://doi.org/10.5281/zenodo.22101143)
+[![R-CMD-check](https://github.com/E4Warning/mwi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/E4Warning/mwi/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22101143.svg)](https://doi.org/10.5281/zenodo.22101143)
 <!-- badges: end -->
 
 The Mosquito Weather Index (MWI) combines air temperature, relative
@@ -122,8 +123,9 @@ mwi(temperature, humidity, wind, units = "m/s")
 
 ## Citation
 
-If you use this package, please cite the evaluation study alongside it.
-See `citation("mwi")`.
+If you use this package, please cite it (archived at
+[doi:10.5281/zenodo.22101143](https://doi.org/10.5281/zenodo.22101143))
+together with the evaluation study. See `citation("mwi")`.
 
 ## License
 
