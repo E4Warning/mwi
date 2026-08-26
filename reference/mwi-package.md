@@ -35,13 +35,3 @@ Authors:
 - Vasileios Karras
 
 - Dimitrios Papachristos
-
-- Rachel Lowe
-
-- Frederic Bartumeus
-
-- Ioannis Lemesios
-
-- Christos Giannakopoulos
-
-- Konstantinos Lagouvardos
