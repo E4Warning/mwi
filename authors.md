@@ -34,14 +34,13 @@ R package version 0.1.0.
     }
 
 Michaelakis A, Balatsos G, Palmer J (2026). “Evaluating the Mosquito
-Weather Index Using Adult Suction Traps in Greece.” *Manuscript in
-preparation*. Update this entry with the journal, volume and DOI on
-publication.
+Weather Index Using Adult Suction Traps in Greece.” *Submitted*. Update
+this entry with the journal, volume and DOI on publication.
 
     @Article{,
       title = {Evaluating the Mosquito Weather Index Using Adult Suction Traps in Greece},
       author = {Antonios Michaelakis and Georgios Balatsos and John R. B. Palmer},
-      journal = {Manuscript in preparation},
+      journal = {Submitted},
       year = {2026},
       note = {Update this entry with the journal, volume and DOI on publication},
     }

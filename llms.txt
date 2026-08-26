@@ -123,8 +123,9 @@ mwi(temperature, humidity, wind, units = "m/s")
 
 ## Citation
 
-If you use this package, please cite the evaluation study alongside it.
-See `citation("mwi")`.
+If you use this package, please cite it (archived at
+[doi:10.5281/zenodo.22101143](https://doi.org/10.5281/zenodo.22101143))
+together with the evaluation study. See `citation("mwi")`.
 
 ## License
 
