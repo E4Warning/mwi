@@ -84,3 +84,60 @@ test_that("mwi_summarise() honours wind units", {
   kmh <- mwi_summarise(d$temp, d$rh, d$wind * 3.6, by, units = "km/h")$mwi
   expect_equal(ms, kmh)
 })
+
+test_that("observations with a missing group are kept, in a group of their own", {
+  got <- mwi_summarise(c(22, 22, 22), 70, 5, by = c("a", NA, "a"))
+  expect_equal(got$by, c("a", NA))
+  expect_equal(got$n, c(2L, 1L))
+  expect_equal(sum(got$n), 3L)
+})
+
+test_that("numeric groups stay numeric and sort numerically", {
+  got <- mwi_summarise(c(22, 18, 22), 70, 5, by = c(200, 9, 200))
+  expect_type(got$by, "double")
+  expect_equal(got$by, c(9, 200))
+  expect_equal(got$n, c(1L, 2L))
+})
+
+test_that("POSIXct groups keep their class and time zone", {
+  t0 <- as.POSIXct("2019-07-15 00:00", tz = "Europe/Athens")
+  got <- mwi_summarise(c(22, 22), 70, 5, by = c(t0, t0 + 3600))
+  expect_s3_class(got$by, "POSIXct")
+  expect_equal(attr(got$by, "tzone"), "Europe/Athens")
+  expect_equal(got$by, c(t0, t0 + 3600))
+})
+
+test_that("distinct times that print alike are not merged", {
+  # Clocks go back at 04:00 on 27 October 2019 in Athens, so 03:30 occurs twice
+  first <- as.POSIXct("2019-10-27 00:30", tz = "UTC")
+  twice <- c(first, first + 3600)
+  attr(twice, "tzone") <- "Europe/Athens"
+  expect_equal(format(twice[1]), format(twice[2]))
+  got <- mwi_summarise(c(22, 22), 70, 5, by = twice)
+  expect_equal(nrow(got), 2)
+  expect_equal(got$n, c(1L, 1L))
+})
+
+test_that("factor groups keep their class, level order and unused levels", {
+  f <- factor(c("low", "high"), levels = c("low", "mid", "high"))
+  got <- mwi_summarise(c(22, 18), 70, 5, by = f)
+  expect_s3_class(got$by, "factor")
+  expect_equal(as.character(got$by), c("low", "mid", "high"))
+  expect_equal(got$n, c(1L, 0L, 1L))
+  expect_true(is.na(got$mwi[2]))
+
+  o <- factor(c("b", "a"), levels = c("b", "a"), ordered = TRUE)
+  expect_s3_class(mwi_summarise(c(22, 18), 70, 5, by = o)$by, "ordered")
+})
+
+test_that("an empty grouping vector gives an empty result", {
+  got <- mwi_summarise(numeric(0), numeric(0), numeric(0), by = character(0))
+  expect_equal(nrow(got), 0)
+})
+
+test_that("POSIXlt groups are handled as POSIXct", {
+  t0 <- as.POSIXlt("2019-07-15 00:00", tz = "UTC")
+  got <- mwi_summarise(c(22, 22), 70, 5, by = c(t0, t0))
+  expect_s3_class(got$by, "POSIXct")
+  expect_equal(got$n, 2L)
+})
