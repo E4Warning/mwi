@@ -47,6 +47,13 @@ the operational definition of the index.
 6 m/s (21.6 km/h) and zero above it.
 
 All three are vectorised and propagate \code{NA}.
+
+Because a response of zero silences the whole index, inputs in the wrong
+units fail quietly: temperatures in Kelvin or humidity as a proportion would
+give an index of zero everywhere. The functions therefore warn when given
+temperatures above 100, humidities that all lie between 0 and 1, or negative
+wind speeds (a sign that a wind vector component was passed instead of a
+speed, which would make every hour look calm).
 }
 \examples{
 mwi_temperature(c(10, 15, 17.5, 22, 27.5, 30, 35))

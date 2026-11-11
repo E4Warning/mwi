@@ -20,6 +20,13 @@
 #'
 #' All three are vectorised and propagate `NA`.
 #'
+#' Because a response of zero silences the whole index, inputs in the wrong
+#' units fail quietly: temperatures in Kelvin or humidity as a proportion would
+#' give an index of zero everywhere. The functions therefore warn when given
+#' temperatures above 100, humidities that all lie between 0 and 1, or negative
+#' wind speeds (a sign that a wind vector component was passed instead of a
+#' speed, which would make every hour look calm).
+#'
 #' @param temperature Numeric vector of air temperatures in degrees Celsius.
 #' @param humidity Numeric vector of relative humidities in percent (0-100).
 #' @param wind_speed Numeric vector of wind speeds, in the units given by
@@ -51,6 +58,11 @@ mwi_temperature <- function(temperature) {
   out <- rep(NA_real_, length(temperature))
   ok <- !is.na(temperature)
   t <- temperature[ok]
+  if (any(t > 100)) {
+    warning("`temperature` contains values above 100, which are not plausible ",
+            "air temperatures in degrees Celsius. Convert Kelvin with ",
+            "celsius_from_kelvin().", call. = FALSE)
+  }
 
   out[ok] <- ifelse(
     t <= 15 | t > 30,
@@ -73,8 +85,19 @@ mwi_humidity <- function(humidity) {
   out <- rep(NA_real_, length(humidity))
   ok <- !is.na(humidity)
   h <- humidity[ok]
+  if (length(h) > 0L && all(h <= 1) && any(h > 0)) {
+    warning("All `humidity` values are between 0 and 1. Relative humidity ",
+            "must be in percent (0-100), not a proportion.", call. = FALSE)
+  }
 
-  out[ok] <- ifelse(h < 40 | h > 95, 0, (h - 40) / 55)
+  # Written as h / 55 - 40 / 55, not the algebraically equal (h - 40) / 55,
+  # because that is the floating-point expression the evaluation study's
+  # pipeline used. The two differ in the last bit for about 60% of observed
+  # humidities, and MCMC amplifies bit-level differences in covariates into
+  # visibly different posterior summaries, so only the identical expression
+  # lets the replication package reproduce the published numbers exactly.
+  # Both are exact at the cut-offs: 0 at 40% and 1 at 95%.
+  out[ok] <- ifelse(h < 40 | h > 95, 0, h / 55 - 40 / 55)
   out
 }
 
@@ -89,6 +112,11 @@ mwi_wind <- function(wind_speed, units = c("km/h", "m/s")) {
 
   out <- rep(NA_real_, length(kmh))
   ok <- !is.na(kmh)
+  if (any(kmh[ok] < 0)) {
+    warning("`wind_speed` contains negative values. Supply a speed, not a ",
+            "vector component (see wind_speed_from_components()).",
+            call. = FALSE)
+  }
   out[ok] <- as.numeric(kmh[ok] <= mwi_wind_threshold())
   out
 }

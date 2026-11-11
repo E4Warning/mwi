@@ -62,3 +62,17 @@ test_that("responses reject non-numeric input", {
   expect_error(mwi_temperature("22"), "must be numeric")
   expect_error(mwi_humidity(TRUE), "must be numeric")
 })
+
+test_that("inputs in the wrong units are flagged rather than silently zeroed", {
+  expect_warning(mwi_temperature(295.15), "celsius_from_kelvin")
+  expect_warning(mwi_humidity(c(0.4, 0.7)), "not a proportion")
+  expect_warning(mwi_wind(c(-1.2, 3)), "not a")
+  expect_warning(mwi(295.15, 70, 5), "celsius_from_kelvin")
+})
+
+test_that("plausible inputs raise no warnings", {
+  expect_no_warning(mwi_temperature(c(-5, 22, 45)))
+  expect_no_warning(mwi_humidity(c(0, 0)))
+  expect_no_warning(mwi_humidity(c(1, 55)))
+  expect_no_warning(mwi_wind(c(0, 30)))
+})
