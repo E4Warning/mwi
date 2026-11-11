@@ -22,7 +22,8 @@ wind_speed_from_components(u, v)
 
 ## Value
 
-A numeric vector of wind speeds in the units of `u` and `v`.
+A numeric vector of wind speeds in the units of `u` and `v`. Arguments
+must have the same length or length 1.
 
 ## Examples
 

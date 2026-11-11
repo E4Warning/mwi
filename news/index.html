@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mwi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,31 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="mwi-development-version">mwi (development version)<a class="anchor" aria-label="anchor" href="#mwi-development-version"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/mwi_summarise.html">mwi_summarise()</a></code> no longer silently drops observations whose <code>by</code> value is <code>NA</code>; they now form a group of their own, reported last. The <code>by</code> column of the result keeps the class of the <code>by</code> argument (numeric, <code>POSIXct</code> and factor groups were previously returned as character), and grouping matches on underlying values, so distinct times that print alike, such as the repeated hour when clocks go back, are no longer merged.</li>
+<li>
+<code><a href="../reference/mwi_category.html">mwi_category()</a></code> compares values with the class boundaries using a tolerance of <code>1e-9</code>, so that values differing from a boundary only by floating-point rounding are classified correctly. Previously <code>mwi(18.3, 95, 5)</code>, which is exactly 0.66, was classed as “High activity” rather than “Moderate activity”. No index value in the evaluation study lies within the tolerance of a boundary, so no published result is affected.</li>
+<li>
+<code><a href="../reference/relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint()</a></code> now defaults to the Magnus coefficients given by the Vaisala reference its documentation cites (m = 7.591386, Tn = 240.7263); the previous defaults (7.591398, 240.726) contained a transcription error. Over the study’s ERA5-Land data the difference is at most 0.0001 percentage points of relative humidity. The evaluation pipeline passes its coefficients explicitly, so its results are unchanged.</li>
+<li>
+<code>citation("mwi")</code> now gives the evaluation article’s correct title and full author list.</li>
+<li>
+<code><a href="../reference/mwi_responses.html">mwi_humidity()</a></code> now evaluates the humidity ramp as <code>h / 55 - 40 / 55</code>, the exact floating-point expression used by the evaluation study’s pipeline, instead of the algebraically equal <code>(h - 40) / 55</code>. The two differ only in the last bit, but for about 60% of observed humidities, and MCMC amplifies such differences into visibly different posterior summaries; with the identical expression the replication package can reproduce the published numbers exactly.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/mwi_responses.html">mwi_temperature()</a></code>, <code><a href="../reference/mwi_responses.html">mwi_humidity()</a></code> and <code><a href="../reference/mwi_responses.html">mwi_wind()</a></code>, and so <code><a href="../reference/mwi.html">mwi()</a></code>, warn when inputs look like the wrong units: temperatures above 100 (Kelvin), humidities that all lie between 0 and 1 (a proportion rather than percent), or negative wind speeds (a vector component rather than a speed). These would otherwise silently give an index of zero, or for wind, one.</li>
+<li>
+<code><a href="../reference/relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint()</a></code> and <code><a href="../reference/wind_speed_from_components.html">wind_speed_from_components()</a></code> enforce the same recycling rule as <code><a href="../reference/mwi.html">mwi()</a></code>: arguments must have the same length or length 1.</li>
+<li>
+<code><a href="../reference/mwi_category.html">mwi_category()</a></code> gives an informative error for duplicated <code>labels</code>.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="mwi-010">mwi 0.1.0<a class="anchor" aria-label="anchor" href="#mwi-010"></a></h2>
 <p>Initial public release, accompanying the article <em>Evaluating the Mosquito Weather Index: A simple tool for predicting and communicating mosquito activity</em> (submitted).</p>
 <ul><li>
@@ -45,7 +70,8 @@
 <li>Conversions for reanalysis inputs: <code><a href="../reference/relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint()</a></code> (Magnus approximation), <code><a href="../reference/wind_speed_from_components.html">wind_speed_from_components()</a></code>, <code><a href="../reference/celsius_from_kelvin.html">celsius_from_kelvin()</a></code>.</li>
 <li>Validated against the article’s analysis pipeline: the test suite includes 314 hourly ERA5-Land observations from the study with pipeline-computed reference values, stratified across every regime of every response function.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

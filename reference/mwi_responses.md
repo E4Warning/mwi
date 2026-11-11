@@ -54,6 +54,13 @@ intentional and matches the operational definition of the index.
 
 All three are vectorised and propagate `NA`.
 
+Because a response of zero silences the whole index, inputs in the wrong
+units fail quietly: temperatures in Kelvin or humidity as a proportion
+would give an index of zero everywhere. The functions therefore warn
+when given temperatures above 100, humidities that all lie between 0 and
+1, or negative wind speeds (a sign that a wind vector component was
+passed instead of a speed, which would make every hour look calm).
+
 ## References
 
 Developed under the LIFE CONOPS project (LIFE12 ENV/GR/000466) by the

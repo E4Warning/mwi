@@ -13,7 +13,7 @@ humidity loggers."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">mwi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@ humidity loggers.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">mwi_fhft</span><span class="op">(</span>temperature <span class="op">=</span> <span class="fl">22</span>, humidity <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5454545</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Equal to mwi() whenever wind is below the cut-off</span></span></span>
+<span class="r-in"><span><span class="co"># Equal to mwi() whenever wind is at or below the cut-off</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu">mwi_fhft</span><span class="op">(</span><span class="fl">22</span>, <span class="fl">70</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="mwi.html">mwi</a></span><span class="op">(</span><span class="fl">22</span>, <span class="fl">70</span>, wind_speed <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>

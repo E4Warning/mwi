@@ -37,7 +37,10 @@ mwi_summarise(
 
   Grouping vector the same length as the weather inputs, typically a
   `Date` or a day-of-year. Values are summarised within each unique
-  element. Use `NULL` to summarise everything into a single value.
+  element. Missing values of `by` form a group of their own, reported
+  last, so no observation is silently dropped. For a factor, every level
+  is reported, including levels with no observations. Use `NULL` to
+  summarise everything into a single value.
 
 - statistic:
 
@@ -55,9 +58,11 @@ mwi_summarise(
 
 ## Value
 
-A data frame with one row per group and columns `by`, `mwi` and `n` (the
-number of observations contributing to the group). If `by` is `NULL`, a
-one-row data frame with `by = NA`.
+A data frame with one row per group, sorted by group, and columns `by`
+(the group, with the same class as the `by` argument, so the result can
+be joined back onto the data it came from), `mwi`, and `n` (the number
+of non-missing index values in the group). If `by` is `NULL`, a one-row
+data frame with `by = NA`.
 
 ## Details
 
@@ -71,10 +76,13 @@ computed from them describes conditions that never co-occurred.
 
 `mwi_summarise()` therefore takes sub-daily observations, evaluates
 [`mwi()`](https://e4warning.github.io/mwi/reference/mwi.md) on each one,
-and reduces the results with `statistic` within each level of `by`.
-Empirically the maximum is the more informative summary: it captures
-whether the period contained a window of favourable conditions, rather
-than how favourable the period was on average.
+and reduces the results with `statistic` within each level of `by`. In
+the evaluation study, the daily maximum predicted adult trap counts
+better than the daily mean, consistent with catches responding to
+whether the day contained a window of favourable conditions rather than
+to how favourable it was on average. That is one city and one trap type,
+so treat the default as a sensible starting point rather than a general
+rule.
 
 ## See also
 

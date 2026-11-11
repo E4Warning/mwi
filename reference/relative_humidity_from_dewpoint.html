@@ -13,7 +13,7 @@ distribute dewpoint rather than relative humidity."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">mwi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,8 +52,8 @@ distribute dewpoint rather than relative humidity.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">relative_humidity_from_dewpoint</span><span class="op">(</span></span>
 <span>  <span class="va">dewpoint</span>,</span>
 <span>  <span class="va">temperature</span>,</span>
-<span>  m <span class="op">=</span> <span class="fl">7.591398</span>,</span>
-<span>  tn <span class="op">=</span> <span class="fl">240.726</span></span>
+<span>  m <span class="op">=</span> <span class="fl">7.591386</span>,</span>
+<span>  tn <span class="op">=</span> <span class="fl">240.7263</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -70,13 +70,22 @@ distribute dewpoint rather than relative humidity.</p>
 
 
 <dt id="arg-m-tn">m, tn<a class="anchor" aria-label="anchor" href="#arg-m-tn"></a></dt>
-<dd><p>Magnus coefficients. The defaults are the values for water vapour
-over liquid water.</p></dd>
+<dd><p>Magnus coefficients. The defaults are Vaisala's values for water
+vapour over liquid water between -20 and +50 degrees Celsius (Table 1 of the
+reference below).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A numeric vector of relative humidities in percent.</p>
+    <p>A numeric vector of relative humidities in percent. Arguments must
+have the same length or length 1.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The result is not capped at 100%. Reanalysis dewpoint occasionally exceeds
+air temperature slightly, giving values just above 100; these are returned
+as they are, so that such cases remain visible. The index is unaffected,
+because <code><a href="mwi_responses.html">mwi_humidity()</a></code> treats anything above 95% as unfavourable.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -87,7 +96,7 @@ humidity. Technical report B210973EN-F.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">relative_humidity_from_dewpoint</span><span class="op">(</span>dewpoint <span class="op">=</span> <span class="fl">15</span>, temperature <span class="op">=</span> <span class="fl">22</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64.50612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 64.50619</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Dewpoint equal to air temperature is saturation</span></span></span>
 <span class="r-in"><span><span class="fu">relative_humidity_from_dewpoint</span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span><span class="op">)</span></span></span>

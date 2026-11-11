@@ -12,8 +12,8 @@ rather than relative humidity.
 relative_humidity_from_dewpoint(
   dewpoint,
   temperature,
-  m = 7.591398,
-  tn = 240.726
+  m = 7.591386,
+  tn = 240.7263
 )
 ```
 
@@ -29,12 +29,23 @@ relative_humidity_from_dewpoint(
 
 - m, tn:
 
-  Magnus coefficients. The defaults are the values for water vapour over
-  liquid water.
+  Magnus coefficients. The defaults are Vaisala's values for water
+  vapour over liquid water between -20 and +50 degrees Celsius (Table 1
+  of the reference below).
 
 ## Value
 
-A numeric vector of relative humidities in percent.
+A numeric vector of relative humidities in percent. Arguments must have
+the same length or length 1.
+
+## Details
+
+The result is not capped at 100%. Reanalysis dewpoint occasionally
+exceeds air temperature slightly, giving values just above 100; these
+are returned as they are, so that such cases remain visible. The index
+is unaffected, because
+[`mwi_humidity()`](https://e4warning.github.io/mwi/reference/mwi_responses.md)
+treats anything above 95% as unfavourable.
 
 ## References
 
@@ -45,7 +56,7 @@ humidity. Technical report B210973EN-F.
 
 ``` r
 relative_humidity_from_dewpoint(dewpoint = 15, temperature = 22)
-#> [1] 64.50612
+#> [1] 64.50619
 
 # Dewpoint equal to air temperature is saturation
 relative_humidity_from_dewpoint(20, 20)

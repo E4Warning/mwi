@@ -9,7 +9,7 @@ communicate the index to the public and to mosquito-control stakeholders."></hea
 
     <a class="navbar-brand me-2" href="../index.html">mwi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,12 @@ index attains only when relative humidity is exactly 95% and the other two
 variables are in their optimal ranges (see <code><a href="mwi.html">mwi()</a></code>). Reported humidity is
 usually rounded to whole percentage points, so this occurs in practice,
 but it will be rare in continuous data such as reanalysis output.</p>
+<p>Boundaries are compared with a tolerance of <code>1e-9</code>, so that a value which
+differs from a boundary only by floating-point rounding is classified as
+the exact value would be. For example, <code>mwi(18.3, 95, 5)</code> is exactly 0.66
+("moderate") but evaluates to 0.66000000000000014 in floating point. Rounded
+inputs such as operational forecasts produce such cases; the tolerance is
+far too small to affect continuous data.</p>
     </div>
 
     <div class="section level2">

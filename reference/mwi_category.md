@@ -49,6 +49,13 @@ humidity is usually rounded to whole percentage points, so this occurs
 in practice, but it will be rare in continuous data such as reanalysis
 output.
 
+Boundaries are compared with a tolerance of `1e-9`, so that a value
+which differs from a boundary only by floating-point rounding is
+classified as the exact value would be. For example, `mwi(18.3, 95, 5)`
+is exactly 0.66 ("moderate") but evaluates to 0.66000000000000014 in
+floating point. Rounded inputs such as operational forecasts produce
+such cases; the tolerance is far too small to affect continuous data.
+
 ## Examples
 
 ``` r

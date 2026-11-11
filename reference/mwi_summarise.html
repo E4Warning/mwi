@@ -13,7 +13,7 @@ to misuse it."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">mwi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,10 @@ to misuse it.</p>
 <dt id="arg-by">by<a class="anchor" aria-label="anchor" href="#arg-by"></a></dt>
 <dd><p>Grouping vector the same length as the weather inputs, typically a
 <code>Date</code> or a day-of-year. Values are summarised within each unique element.
-Use <code>NULL</code> to summarise everything into a single value.</p></dd>
+Missing values of <code>by</code> form a group of their own, reported last, so no
+observation is silently dropped. For a factor, every level is reported,
+including levels with no observations. Use <code>NULL</code> to summarise everything
+into a single value.</p></dd>
 
 
 <dt id="arg-statistic">statistic<a class="anchor" aria-label="anchor" href="#arg-statistic"></a></dt>
@@ -99,9 +102,11 @@ Use <code>NULL</code> to summarise everything into a single value.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with one row per group and columns <code>by</code>, <code>mwi</code> and <code>n</code>
-(the number of observations contributing to the group). If <code>by</code> is <code>NULL</code>,
-a one-row data frame with <code>by = NA</code>.</p>
+    <p>A data frame with one row per group, sorted by group, and columns
+<code>by</code> (the group, with the same class as the <code>by</code> argument, so the result
+can be joined back onto the data it came from), <code>mwi</code>, and <code>n</code> (the number
+of non-missing index values in the group). If <code>by</code> is <code>NULL</code>, a one-row
+data frame with <code>by = NA</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -115,9 +120,11 @@ from them describes conditions that never co-occurred.</p>
 <p><code>mwi_summarise()</code> therefore takes sub-daily observations, evaluates
 <code><a href="mwi.html">mwi()</a></code> on each one, and reduces the results with <code>statistic</code> within each
 level of <code>by</code>.
-Empirically the maximum is the more informative summary: it captures whether
-the period contained a window of favourable conditions, rather than how
-favourable the period was on average.</p>
+In the evaluation study, the daily maximum predicted adult trap counts
+better than the daily mean, consistent with catches responding to whether
+the day contained a window of favourable conditions rather than to how
+favourable it was on average. That is one city and one trap type, so treat
+the default as a sensible starting point rather than a general rule.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
