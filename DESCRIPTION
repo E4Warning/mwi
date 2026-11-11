@@ -1,6 +1,6 @@
 Package: mwi
 Title: Compute the Mosquito Weather Index
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Antonios", "Michaelakis", role = "aut",
            comment = c(ORCID = "0000-0002-3075-5020")),

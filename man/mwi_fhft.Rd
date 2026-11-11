@@ -23,7 +23,7 @@ humidity loggers.
 \examples{
 mwi_fhft(temperature = 22, humidity = 70)
 
-# Equal to mwi() whenever wind is below the cut-off
+# Equal to mwi() whenever wind is at or below the cut-off
 identical(
   mwi_fhft(22, 70),
   mwi(22, 70, wind_speed = 0)
