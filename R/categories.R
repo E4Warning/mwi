@@ -20,6 +20,13 @@
 #' usually rounded to whole percentage points, so this occurs in practice,
 #' but it will be rare in continuous data such as reanalysis output.
 #'
+#' Boundaries are compared with a tolerance of `1e-9`, so that a value which
+#' differs from a boundary only by floating-point rounding is classified as
+#' the exact value would be. For example, `mwi(18.3, 95, 5)` is exactly 0.66
+#' ("moderate") but evaluates to 0.66000000000000014 in floating point. Rounded
+#' inputs such as operational forecasts produce such cases; the tolerance is
+#' far too small to affect continuous data.
+#'
 #' @param x Numeric vector of index values in `[0, 1]`, for example the
 #'   result of [mwi()].
 #' @param labels Character vector of five class labels, ordered from least to
@@ -45,8 +52,12 @@ mwi_category <- function(x, labels = mwi_activity_levels()) {
     stop("`labels` must have exactly 5 elements, not ", length(labels), ".",
          call. = FALSE)
   }
+  if (anyDuplicated(labels)) {
+    stop("`labels` must be distinct.", call. = FALSE)
+  }
 
-  bad <- !is.na(x) & (x < 0 | x > 1)
+  tol <- category_tolerance()
+  bad <- !is.na(x) & (x < -tol | x > 1 + tol)
   if (any(bad)) {
     stop("`x` must contain index values in [0, 1]; found ", sum(bad),
          " value(s) outside that range.", call. = FALSE)
@@ -57,10 +68,10 @@ mwi_category <- function(x, labels = mwi_activity_levels()) {
   v <- x[ok]
 
   out[ok] <- ifelse(
-    v == 0, labels[1],
-    ifelse(v <= 0.33, labels[2],
-      ifelse(v <= 0.66, labels[3],
-        ifelse(v < 1, labels[4], labels[5])
+    v <= tol, labels[1],
+    ifelse(v <= 0.33 + tol, labels[2],
+      ifelse(v <= 0.66 + tol, labels[3],
+        ifelse(v < 1 - tol, labels[4], labels[5])
       )
     )
   )
@@ -87,3 +98,10 @@ mwi_activity_levels <- function() {
     "Very high activity"
   )
 }
+
+
+#' Tolerance for comparing index values with class boundaries
+#'
+#' @return A length-one numeric vector.
+#' @noRd
+category_tolerance <- function() 1e-9

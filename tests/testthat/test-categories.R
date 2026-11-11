@@ -57,3 +57,24 @@ test_that("every class is reachable from real weather inputs", {
   )))
   expect_equal(got, mwi_activity_levels())
 })
+
+test_that("floating-point noise at a boundary does not change the class", {
+  # 0.2 * 18.3 - 3 is exactly 0.66 but evaluates to 0.66000000000000014
+  expect_gt(mwi(18.3, 95, 5), 0.66)
+  expect_equal(as.character(mwi_category(mwi(c(18.3, 26.7), 95, 5))),
+               rep("Moderate activity", 2))
+  expect_equal(as.character(mwi_category(c(0.33 + 1e-12, 1 - 1e-12, 1e-12))),
+               c("Low activity", "Very high activity", "No activity"))
+})
+
+test_that("the boundary tolerance is too small to affect genuine values", {
+  expect_equal(as.character(mwi_category(c(0.33 + 1e-7, 0.66 + 1e-7, 1 - 1e-7))),
+               c("Moderate activity", "High activity", "High activity"))
+  expect_equal(as.character(mwi_category(1 + 1e-12)), "Very high activity")
+  expect_error(mwi_category(1 + 1e-6), "outside that range")
+})
+
+test_that("mwi_category() rejects duplicated labels", {
+  expect_error(mwi_category(0.5, labels = c("a", "b", "b", "c", "d")),
+               "must be distinct")
+})
