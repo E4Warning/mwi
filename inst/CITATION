@@ -9,17 +9,23 @@ bibentry(
                person("Dimitrios", "Papachristos"),
                person("John R. B.", "Palmer")),
   year     = "2026",
-  note     = "R package version 0.1.0",
+  note     = sprintf("R package version %s", meta$Version),
   doi      = "10.5281/zenodo.22101143"
 )
 
 bibentry(
-  bibtype  = "Article",
-  title    = "Evaluating the Mosquito Weather Index Using Adult Suction Traps in Greece",
+  bibtype  = "Unpublished",
+  title    = "Evaluating the Mosquito Weather Index: A simple tool for predicting and communicating mosquito activity",
   author   = c(person("Antonios", "Michaelakis"),
                person("Georgios", "Balatsos"),
+               person("Vasileios", "Karras"),
+               person("Dimitrios", "Papachristos"),
+               person("Rachel", "Lowe"),
+               person("Frederic", "Bartumeus"),
+               person("Ioannis", "Lemesios"),
+               person("Christos", "Giannakopoulos"),
+               person("Konstantinos", "Lagouvardos"),
                person("John R. B.", "Palmer")),
-  journal  = "Submitted",
   year     = "2026",
-  note     = "Update this entry with the journal, volume and DOI on publication"
+  note     = "Manuscript submitted for publication"
 )
