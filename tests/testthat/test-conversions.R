@@ -64,3 +64,29 @@ test_that("conversions reject non-numeric input", {
   expect_error(celsius_from_kelvin("273"), "must be numeric")
   expect_error(wind_speed_from_components("1", 2), "must be numeric")
 })
+
+test_that("Magnus defaults are Vaisala's coefficients for water, -20 to +50 C", {
+  f <- formals(relative_humidity_from_dewpoint)
+  expect_equal(f$m, 7.591386)
+  expect_equal(f$tn, 240.7263)
+})
+
+test_that("the conversion matches Vaisala's formula written out in full", {
+  # Vaisala (2013) eq. 6: Pws = A * 10^(m * T / (T + Tn)); RH = 100 * Pw / Pws,
+  # where Pw is Pws evaluated at the dewpoint. A cancels in the ratio.
+  pws <- function(t) 6.116441 * 10^(7.591386 * t / (t + 240.7263))
+  td <- c(-10, 5, 15, 24)
+  t <- c(-2, 18, 22, 31)
+  expect_equal(relative_humidity_from_dewpoint(td, t), 100 * pws(td) / pws(t))
+})
+
+test_that("supersaturated inputs are returned uncapped", {
+  expect_gt(relative_humidity_from_dewpoint(20.3, 20), 100)
+})
+
+test_that("conversions reject partial recycling", {
+  expect_error(relative_humidity_from_dewpoint(c(10, 12, 14), c(20, 22)),
+               "same length or length 1")
+  expect_error(wind_speed_from_components(c(1, 2, 3), c(1, 2)),
+               "same length or length 1")
+})

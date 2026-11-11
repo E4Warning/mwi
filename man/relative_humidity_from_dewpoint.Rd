@@ -7,8 +7,8 @@
 relative_humidity_from_dewpoint(
   dewpoint,
   temperature,
-  m = 7.591398,
-  tn = 240.726
+  m = 7.591386,
+  tn = 240.7263
 )
 }
 \arguments{
@@ -16,17 +16,25 @@ relative_humidity_from_dewpoint(
 
 \item{temperature}{Numeric vector of air temperatures in degrees Celsius.}
 
-\item{m, tn}{Magnus coefficients. The defaults are the values for water vapour
-over liquid water.}
+\item{m, tn}{Magnus coefficients. The defaults are Vaisala's values for water
+vapour over liquid water between -20 and +50 degrees Celsius (Table 1 of the
+reference below).}
 }
 \value{
-A numeric vector of relative humidities in percent.
+A numeric vector of relative humidities in percent. Arguments must
+have the same length or length 1.
 }
 \description{
 Uses the Magnus approximation, which is accurate over roughly -20 to 50
 degrees Celsius. This is the conversion needed to obtain the humidity
 input of \code{\link[=mwi]{mwi()}} from reanalysis products such as ERA5-Land, which
 distribute dewpoint rather than relative humidity.
+}
+\details{
+The result is not capped at 100\%. Reanalysis dewpoint occasionally exceeds
+air temperature slightly, giving values just above 100; these are returned
+as they are, so that such cases remain visible. The index is unaffected,
+because \code{\link[=mwi_humidity]{mwi_humidity()}} treats anything above 95\% as unfavourable.
 }
 \examples{
 relative_humidity_from_dewpoint(dewpoint = 15, temperature = 22)

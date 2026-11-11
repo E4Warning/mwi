@@ -5,12 +5,20 @@
 #' input of [mwi()] from reanalysis products such as ERA5-Land, which
 #' distribute dewpoint rather than relative humidity.
 #'
+#' @details
+#' The result is not capped at 100%. Reanalysis dewpoint occasionally exceeds
+#' air temperature slightly, giving values just above 100; these are returned
+#' as they are, so that such cases remain visible. The index is unaffected,
+#' because [mwi_humidity()] treats anything above 95% as unfavourable.
+#'
 #' @param dewpoint Numeric vector of dewpoint temperatures in degrees Celsius.
 #' @param temperature Numeric vector of air temperatures in degrees Celsius.
-#' @param m,tn Magnus coefficients. The defaults are the values for water vapour
-#'   over liquid water.
+#' @param m,tn Magnus coefficients. The defaults are Vaisala's values for water
+#'   vapour over liquid water between -20 and +50 degrees Celsius (Table 1 of the
+#'   reference below).
 #'
-#' @return A numeric vector of relative humidities in percent.
+#' @return A numeric vector of relative humidities in percent. Arguments must
+#'   have the same length or length 1.
 #'
 #' @references
 #' Vaisala (2013). Humidity Conversion Formulas: Calculation formulas for
@@ -24,9 +32,10 @@
 #'
 #' @export
 relative_humidity_from_dewpoint <- function(dewpoint, temperature,
-                                           m = 7.591398, tn = 240.726) {
+                                           m = 7.591386, tn = 240.7263) {
   check_numeric(dewpoint, "dewpoint")
   check_numeric(temperature, "temperature")
+  recycle_length(dewpoint = dewpoint, temperature = temperature)
 
   100 * 10^(m * (
     (dewpoint / (dewpoint + tn)) - (temperature / (temperature + tn))
@@ -44,6 +53,7 @@ relative_humidity_from_dewpoint <- function(dewpoint, temperature,
 #' @param v Numeric vector of northward (meridional) wind components.
 #'
 #' @return A numeric vector of wind speeds in the units of `u` and `v`.
+#'   Arguments must have the same length or length 1.
 #'
 #' @examples
 #' wind_speed_from_components(u = 3, v = 4)
@@ -56,6 +66,7 @@ relative_humidity_from_dewpoint <- function(dewpoint, temperature,
 wind_speed_from_components <- function(u, v) {
   check_numeric(u, "u")
   check_numeric(v, "v")
+  recycle_length(u = u, v = v)
   sqrt(u^2 + v^2)
 }
 

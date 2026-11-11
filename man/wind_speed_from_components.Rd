@@ -13,6 +13,7 @@ wind_speed_from_components(u, v)
 }
 \value{
 A numeric vector of wind speeds in the units of \code{u} and \code{v}.
+Arguments must have the same length or length 1.
 }
 \description{
 Reanalysis products distribute wind as orthogonal components rather than as a
