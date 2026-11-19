@@ -11,13 +11,15 @@
 #' when temperature is between 20 and 25 degrees Celsius, relative humidity is
 #' exactly 95%, and wind speed is at or below the cut-off.
 #'
-#' **The index must be computed before it is averaged, not after.** `mwi()` is a
-#' non-linear function of its inputs, so evaluating it on daily mean or daily
-#' maximum weather gives a different -- and empirically much less useful --
-#' answer than evaluating it hourly and then summarising the result. Daily
-#' maxima of humidity and of temperature typically occur many hours apart, so
-#' an index built from them describes an hour that never happened. Use
-#' [mwi_summarise()] to aggregate in the correct order.
+#' **The index should be computed from temperature, humidity and wind speed
+#' values at hourly resolution or finer, with any summaries (means, maxima)
+#' done on the index values, not on the weather variables used to compute it.**
+#' `mwi()` is a non-linear function of its inputs, so evaluating it on daily
+#' mean or daily maximum weather gives a different -- and empirically much less
+#' useful -- answer than evaluating it hourly and then summarising the result.
+#' Daily maxima of humidity and of temperature typically occur many hours
+#' apart, so an index built from them describes an hour that never happened.
+#' Use [mwi_summarise()] to aggregate in the correct order.
 #'
 #' @param temperature Numeric vector of air temperatures in degrees Celsius.
 #' @param humidity Numeric vector of relative humidities in percent (0-100).

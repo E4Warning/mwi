@@ -80,12 +80,14 @@ data.frame(mwi = x, class = mwi_category(x))
 
 ## Computing the index over time
 
-**The index must be computed before it is averaged, not after.** Because
-`mwi()` is non-linear, evaluating it on daily summaries of each weather
-variable is not the same as evaluating it hourly and then summarising
-the result — and it is much less useful. Daily maxima of temperature and
-of humidity typically occur many hours apart, so an index built from
-them describes an hour that never happened.
+**The index should be computed from temperature, humidity and wind speed
+values at hourly resolution or finer, with any summaries (means, maxima)
+done on the index values, not on the weather variables used to compute
+it.** Because `mwi()` is non-linear, evaluating it on daily summaries of
+each weather variable is not the same as evaluating it hourly and then
+summarising the result — and it is much less useful. Daily maxima of
+temperature and of humidity typically occur many hours apart, so an
+index built from them describes an hour that never happened.
 
 `mwi_summarise()` does it in the right order:
 
@@ -118,7 +120,7 @@ humidity <- relative_humidity_from_dewpoint(dewpoint, temperature)
 wind <- wind_speed_from_components(u = 1.2, v = -0.8)
 
 mwi(temperature, humidity, wind, units = "m/s")
-#> [1] 0.4455658
+#> [1] 0.4455672
 ```
 
 ## Citation
@@ -126,6 +128,13 @@ mwi(temperature, humidity, wind, units = "m/s")
 If you use this package, please cite it (archived at
 [doi:10.5281/zenodo.22101143](https://doi.org/10.5281/zenodo.22101143))
 together with the evaluation study. See `citation("mwi")`.
+
+## Use of AI tools
+
+Parts of this package’s code, tests and documentation were written and
+audited with the help of AI coding assistants based on large language
+models. All AI-assisted material was reviewed and verified by the
+maintainers, who take full responsibility for the package.
 
 ## License
 
