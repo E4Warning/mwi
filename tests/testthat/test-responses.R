@@ -76,3 +76,23 @@ test_that("plausible inputs raise no warnings", {
   expect_no_warning(mwi_humidity(c(1, 55)))
   expect_no_warning(mwi_wind(c(0, 30)))
 })
+
+test_that("each response returns one value per input, with gaps left in place", {
+  temp <- c(NA, 10, 17.5, NA, NA, 22, 27.5, 35, NA)
+  rh <- c(30, NA, 40, 67.5, NA, 95, 96, NA, NA)
+  wind <- c(NA, NA, 0, 21.6, 21.7, NA, 5, 50, NA)
+
+  expect_length(mwi_temperature(temp), length(temp))
+  expect_length(mwi_humidity(rh), length(rh))
+  expect_length(mwi_wind(wind), length(wind))
+  expect_identical(is.na(mwi_temperature(temp)), is.na(temp))
+  expect_identical(is.na(mwi_humidity(rh)), is.na(rh))
+  expect_identical(is.na(mwi_wind(wind)), is.na(wind))
+  expect_equal(mwi_temperature(temp)[!is.na(temp)], c(0, 0.5, 1, 0.5, 0))
+  expect_equal(mwi_humidity(rh)[!is.na(rh)], c(0, 0, 0.5, 1, 0))
+  expect_equal(mwi_wind(wind)[!is.na(wind)], c(1, 1, 0, 1, 0))
+
+  # A series that is entirely missing comes back entirely missing, same length.
+  expect_identical(mwi_temperature(c(NA_real_, NA_real_)), c(NA_real_, NA_real_))
+  expect_identical(mwi_humidity(NA), NA_real_)
+})

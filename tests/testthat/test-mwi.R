@@ -69,3 +69,27 @@ test_that("zero-length input yields zero-length output through recycling", {
   expect_length(mwi(numeric(0), 70, 5), 0)
   expect_length(mwi_fhft(numeric(0), numeric(0)), 0)
 })
+
+test_that("the index stays lined up with a series that has gaps", {
+  # A week of hourly weather with holes in different places in each variable.
+  # The result must have one value per hour, be missing exactly in the hours
+  # where an input is missing, and elsewhere equal the values computed from the
+  # complete hours alone. Otherwise index values would drift away from the
+  # times they belong to.
+  hours <- 0:167
+  temp <- 22 + 6 * sin((hours - 9) / 24 * 2 * pi)
+  rh <- 65 - 20 * sin((hours - 9) / 24 * 2 * pi)
+  wind <- rep(c(5, 12, 25), length.out = length(hours))
+  temp[c(1, 40:43, 100)] <- NA
+  rh[c(2, 41, 120:125, 168)] <- NA
+  wind[c(3, 77)] <- NA
+
+  x <- mwi(temp, rh, wind)
+  gap <- is.na(temp) | is.na(rh) | is.na(wind)
+
+  expect_length(x, length(hours))
+  expect_identical(is.na(x), gap)
+  expect_identical(x[!gap], mwi(temp[!gap], rh[!gap], wind[!gap]))
+  expect_identical(mwi_fhft(temp, rh)[!is.na(temp) & !is.na(rh)],
+                   mwi_fhft(temp[!is.na(temp) & !is.na(rh)], rh[!is.na(temp) & !is.na(rh)]))
+})

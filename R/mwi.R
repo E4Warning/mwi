@@ -46,13 +46,21 @@
 #'
 #' @export
 mwi <- function(temperature, humidity, wind_speed, units = c("km/h", "m/s")) {
+  # Check that `units` is one of the two allowed values (the first, "km/h", is
+  # the default).
   units <- match.arg(units)
+  # The common length of the three inputs: each must have that length or length
+  # 1. Anything else is an error (see recycle_length() in utils.R).
   n <- recycle_length(
     temperature = temperature,
     humidity = humidity,
     wind_speed = wind_speed
   )
 
+  # Repeat any length-1 input to the common length, compute the three responses
+  # element by element, and multiply them. Position i of the result is the index
+  # for the i-th temperature, humidity and wind speed; it is NA if any of the
+  # three is NA there.
   mwi_temperature(rep_len(temperature, n)) *
     mwi_humidity(rep_len(humidity, n)) *
     mwi_wind(rep_len(wind_speed, n), units = units)
@@ -81,6 +89,8 @@ mwi <- function(temperature, humidity, wind_speed, units = c("km/h", "m/s")) {
 #'
 #' @export
 mwi_fhft <- function(temperature, humidity) {
+  # The common length of the two inputs (each must have it, or length 1).
   n <- recycle_length(temperature = temperature, humidity = humidity)
+  # The humidity response times the temperature response, element by element.
   mwi_humidity(rep_len(humidity, n)) * mwi_temperature(rep_len(temperature, n))
 }

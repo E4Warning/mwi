@@ -53,23 +53,36 @@ NULL
 #' @rdname mwi_responses
 #' @export
 mwi_temperature <- function(temperature) {
+  # Stop if the input is not numeric.
   check_numeric(temperature, "temperature")
 
+  # Start from a result that is all NA and as long as the input. The values that
+  # are present are computed below and written back into their own positions, so
+  # the result always lines up with the input, with NA where the input was NA.
   out <- rep(NA_real_, length(temperature))
+  # TRUE where a temperature is present.
   ok <- !is.na(temperature)
+  # The temperatures that are present. Working on these alone lets the
+  # plausibility check below run without tripping over NA.
   t <- temperature[ok]
+  # No air temperature in degrees Celsius exceeds 100; values that do are most
+  # likely in Kelvin, which would silently give an index of zero.
   if (any(t > 100)) {
     warning("`temperature` contains values above 100, which are not plausible ",
             "air temperatures in degrees Celsius. Convert Kelvin with ",
             "celsius_from_kelvin().", call. = FALSE)
   }
 
+  # The trapezoid, written back into the positions of the present values: 0 at
+  # or below 15 and above 30;
   out[ok] <- ifelse(
     t <= 15 | t > 30,
     0,
     ifelse(
+      # rising from 0 at 15 to 1 at 20 (0.2 * t - 3);
       t <= 20,
       0.2 * t - 3,
+      # 1 from 20 to 25; falling from 1 at 25 to 0 at 30 (-0.2 * t + 6).
       ifelse(t <= 25, 1, -0.2 * t + 6)
     )
   )
@@ -80,11 +93,17 @@ mwi_temperature <- function(temperature) {
 #' @rdname mwi_responses
 #' @export
 mwi_humidity <- function(humidity) {
+  # Stop if the input is not numeric.
   check_numeric(humidity, "humidity")
 
+  # The same pattern as in mwi_temperature(): a result of the input's length,
+  # filled only where a humidity is present.
   out <- rep(NA_real_, length(humidity))
   ok <- !is.na(humidity)
   h <- humidity[ok]
+  # If every value present is at most 1 (and not all are zero), the input is
+  # probably a proportion, not a percentage, which would silently give an index
+  # of zero.
   if (length(h) > 0L && all(h <= 1) && any(h > 0)) {
     warning("All `humidity` values are between 0 and 1. Relative humidity ",
             "must be in percent (0-100), not a proportion.", call. = FALSE)
@@ -97,6 +116,8 @@ mwi_humidity <- function(humidity) {
   # visibly different posterior summaries, so only the identical expression
   # lets the replication package reproduce the published numbers exactly.
   # Both are exact at the cut-offs: 0 at 40% and 1 at 95%.
+  # 0 below 40% and above 95%; in between, rising in a straight line from 0 at
+  # 40% to 1 at 95%.
   out[ok] <- ifelse(h < 40 | h > 95, 0, h / 55 - 40 / 55)
   out
 }
@@ -105,18 +126,27 @@ mwi_humidity <- function(humidity) {
 #' @rdname mwi_responses
 #' @export
 mwi_wind <- function(wind_speed, units = c("km/h", "m/s")) {
+  # Stop if the input is not numeric, and check that `units` is one of the two
+  # allowed values.
   check_numeric(wind_speed, "wind_speed")
   units <- match.arg(units)
 
+  # The speed in km/h: multiply by 3.6 if it was given in m/s.
   kmh <- if (units == "m/s") wind_speed * 3.6 else wind_speed
 
+  # The same pattern again: a result of the input's length, filled only where a
+  # speed is present.
   out <- rep(NA_real_, length(kmh))
   ok <- !is.na(kmh)
+  # A negative value cannot be a speed; it is probably one component of the wind
+  # vector.
   if (any(kmh[ok] < 0)) {
     warning("`wind_speed` contains negative values. Supply a speed, not a ",
             "vector component (see wind_speed_from_components()).",
             call. = FALSE)
   }
+  # 1 where the speed is at or below the cut-off (21.6 km/h, which is 6 m/s),
+  # otherwise 0.
   out[ok] <- as.numeric(kmh[ok] <= mwi_wind_threshold())
   out
 }
@@ -135,6 +165,8 @@ mwi_wind <- function(wind_speed, units = c("km/h", "m/s")) {
 #' mwi_wind_threshold("m/s")
 #' @export
 mwi_wind_threshold <- function(units = c("km/h", "m/s")) {
+  # Check that `units` is one of the two allowed values.
   units <- match.arg(units)
+  # The cut-off is defined as 6 m/s; in km/h that is 6 * 3.6 = 21.6.
   if (units == "m/s") 6 else 6 * 3.6
 }

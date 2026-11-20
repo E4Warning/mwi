@@ -63,37 +63,57 @@
 mwi_summarise <- function(temperature, humidity, wind_speed, by = NULL,
                           statistic = c("max", "mean", "min"),
                           units = c("km/h", "m/s"), na.rm = FALSE) {
+  # Check the two choices (the first listed is the default).
   statistic <- match.arg(statistic)
   units <- match.arg(units)
 
+  # The index for every observation, in the order given. Missing weather gives a
+  # missing index in the same position.
   values <- mwi(temperature, humidity, wind_speed, units = units)
 
+  # Work out which group each observation belongs to.
   if (is.null(by)) {
+    # With no grouping, everything is one group, labelled NA.
     keys <- NA
     group <- rep_len(1L, length(values))
   } else {
+    # The grouping vector must have one element per observation.
     if (length(by) != length(values)) {
       stop("`by` must be the same length as the weather inputs (",
            length(values), "), not ", length(by), ".", call. = FALSE)
     }
+    # A POSIXlt time is converted to POSIXct, which can be compared and sorted
+    # like a number.
     if (inherits(by, "POSIXlt")) by <- as.POSIXct(by)
+    # The distinct groups, sorted, with NA last.
     keys <- group_keys(by)
     # Match on the underlying values rather than their printed form, which can
     # coincide for distinct times (e.g. the repeated hour when clocks go back).
+    # Number each observation with the position of its group in that list.
     group <- match(unclass(by), unclass(keys))
   }
 
+  # Split the index values by group. Every group gets an entry, even one with no
+  # observations.
   groups <- split(values, factor(group, levels = seq_along(keys)))
+  # The summary function: max, mean or min.
   f <- switch(statistic, max = max, mean = mean, min = min)
 
+  # Reduce each group to one number.
   reduced <- vapply(groups, function(v) {
+    # With na.rm = TRUE, drop the missing index values first.
     if (na.rm) v <- v[!is.na(v)]
+    # A group with nothing left, or (with na.rm = FALSE) with any missing value,
+    # gives NA.
     if (length(v) == 0L || anyNA(v)) return(NA_real_)
+    # Otherwise apply the summary function.
     as.numeric(f(v))
   }, numeric(1))
 
+  # Number of index values that are not missing in each group.
   counts <- vapply(groups, function(v) sum(!is.na(v)), integer(1))
 
+  # One row per group: the group, its summary and that count.
   out <- data.frame(by = keys, mwi = unname(reduced), n = unname(counts),
                     stringsAsFactors = FALSE)
   rownames(out) <- NULL
@@ -111,10 +131,13 @@ mwi_summarise <- function(temperature, humidity, wind_speed, by = NULL,
 #' @return A vector of the same class as `by`.
 #' @noRd
 group_keys <- function(by) {
+  # For a factor: every level, in the factor's own order, plus NA if any
+  # observation has no level.
   if (is.factor(by)) {
     lv <- levels(by)
     return(factor(c(lv, if (anyNA(by)) NA), levels = lv,
                   ordered = is.ordered(by)))
   }
+  # Otherwise: the distinct values, sorted, with NA last.
   sort(unique(by), na.last = TRUE)
 }

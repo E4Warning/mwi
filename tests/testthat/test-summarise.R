@@ -141,3 +141,29 @@ test_that("POSIXlt groups are handled as POSIXct", {
   expect_s3_class(got$by, "POSIXct")
   expect_equal(got$n, 2L)
 })
+
+test_that("daily summaries stay attached to their days when hours are missing", {
+  # Three days of hourly weather; the second day has gaps, the third has no
+  # usable hour at all. Every day must still get its row, in order, and the
+  # gaps in one day must not change another day's value.
+  hours <- 0:71
+  day <- as.Date("2019-07-15") + hours %/% 24
+  temp <- 22 + 6 * sin((hours - 9) / 24 * 2 * pi)
+  rh <- 65 - 20 * sin((hours - 9) / 24 * 2 * pi)
+  wind <- rep(5, length(hours))
+  temp[30:35] <- NA
+  rh[49:72] <- NA
+
+  complete <- mwi_summarise(temp[1:24], rh[1:24], wind[1:24], by = day[1:24])
+  strict <- mwi_summarise(temp, rh, wind, by = day)
+  lenient <- mwi_summarise(temp, rh, wind, by = day, na.rm = TRUE)
+
+  expect_identical(strict$by, as.Date("2019-07-15") + 0:2)
+  expect_identical(lenient$by, strict$by)
+  expect_equal(strict$n, c(24L, 18L, 0L))
+  expect_equal(strict$mwi[1], complete$mwi)
+  expect_true(all(is.na(strict$mwi[2:3])))
+  expect_equal(lenient$mwi[1], complete$mwi)
+  expect_equal(lenient$mwi[2], max(mwi(temp[25:48], rh[25:48], wind[25:48]), na.rm = TRUE))
+  expect_true(is.na(lenient$mwi[3]))
+})

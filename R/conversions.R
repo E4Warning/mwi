@@ -33,10 +33,14 @@
 #' @export
 relative_humidity_from_dewpoint <- function(dewpoint, temperature,
                                            m = 7.591386, tn = 240.7263) {
+  # Stop if either input is not numeric, or if their lengths differ and neither
+  # has length 1.
   check_numeric(dewpoint, "dewpoint")
   check_numeric(temperature, "temperature")
   recycle_length(dewpoint = dewpoint, temperature = temperature)
 
+  # The Magnus formula: RH = 100 * 10^(m * (Td / (Td + Tn) - T / (T + Tn))),
+  # with dew point Td and air temperature T in degrees Celsius.
   100 * 10^(m * (
     (dewpoint / (dewpoint + tn)) - (temperature / (temperature + tn))
   ))
@@ -64,9 +68,12 @@ relative_humidity_from_dewpoint <- function(dewpoint, temperature,
 #'
 #' @export
 wind_speed_from_components <- function(u, v) {
+  # Stop if either input is not numeric, or if their lengths differ and neither
+  # has length 1.
   check_numeric(u, "u")
   check_numeric(v, "v")
   recycle_length(u = u, v = v)
+  # The length of the wind vector.
   sqrt(u^2 + v^2)
 }
 
@@ -79,6 +86,8 @@ wind_speed_from_components <- function(u, v) {
 #' celsius_from_kelvin(c(273.15, 295.15))
 #' @export
 celsius_from_kelvin <- function(kelvin) {
+  # Stop if the input is not numeric.
   check_numeric(kelvin, "kelvin")
+  # 0 degrees Celsius is 273.15 Kelvin.
   kelvin - 273.15
 }

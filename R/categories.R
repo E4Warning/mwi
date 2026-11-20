@@ -47,7 +47,9 @@
 #'
 #' @export
 mwi_category <- function(x, labels = mwi_activity_levels()) {
+  # Stop if the input is not numeric.
   check_numeric(x, "x")
+  # There must be exactly five labels, all different.
   if (length(labels) != 5L) {
     stop("`labels` must have exactly 5 elements, not ", length(labels), ".",
          call. = FALSE)
@@ -56,26 +58,37 @@ mwi_category <- function(x, labels = mwi_activity_levels()) {
     stop("`labels` must be distinct.", call. = FALSE)
   }
 
+  # Values within this distance of a class boundary count as being on it.
   tol <- category_tolerance()
+  # Values below 0 or above 1 (beyond that small distance) cannot be index
+  # values: stop.
   bad <- !is.na(x) & (x < -tol | x > 1 + tol)
   if (any(bad)) {
     stop("`x` must contain index values in [0, 1]; found ", sum(bad),
          " value(s) outside that range.", call. = FALSE)
   }
 
+  # A result of the input's length, all NA to begin with; the classes of the
+  # values that are present are written back into their own positions.
   out <- rep(NA_character_, length(x))
   ok <- !is.na(x)
   v <- x[ok]
 
+  # Classify from the bottom up:
   out[ok] <- ifelse(
+    # 0 is "no activity";
     v <= tol, labels[1],
+    # above 0 and up to 0.33, "low";
     ifelse(v <= 0.33 + tol, labels[2],
+      # above 0.33 and up to 0.66, "moderate";
       ifelse(v <= 0.66 + tol, labels[3],
+        # above 0.66 and below 1, "high"; exactly 1, "very high".
         ifelse(v < 1 - tol, labels[4], labels[5])
       )
     )
   )
 
+  # Return an ordered factor, so that classes can be compared (low < high).
   factor(out, levels = labels, ordered = TRUE)
 }
 
